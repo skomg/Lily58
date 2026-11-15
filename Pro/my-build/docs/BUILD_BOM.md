@@ -1,6 +1,6 @@
 # Lily58 Pro assembly BOM and status
 
-Updated: **2026-10-27**. This is the single record for parts, deliveries and assembly status.
+Updated: **2026-11-15**. This is the single record for parts, deliveries and assembly status.
 
 Quantities cover **one complete keyboard: two halves, 58 keys**, using the original Lily58 Pro PCBs, Choc v1 hot-swap switches and the delivered FR4 sandwich plates. The build includes **wireless operation, two OLED displays with protective covers, and fully wired backup with Bluetooth disabled**. The wired backup still needs a verified design.
 
@@ -112,7 +112,7 @@ Do not directly join independent battery or regulator outputs. For any approved 
 
 ## Assembly status
 
-No parts have been reported Installed or Tested.
+No parts have been reported Tested. The user reported the two at-risk outer-column socket/diode pairs (number row and home row) soldered on one half; see [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md). Test procedure and per-key results: [TESTING.md](TESTING.md).
 
 - [ ] Confirm the ordered 10 mm spacer quantity and repeated bumper/OLED descriptions; verify ordered parts and any included male OLED headers.
 - [ ] Select remaining keycaps, controller connections, power wiring and covers; verify the ordered batteries, OLEDs, sockets and cover spacers fit the full stack.
@@ -136,12 +136,15 @@ No parts have been reported Installed or Tested.
 | 2026-10-26 | User selected **3.7 V, 110 mAh, 301230 rechargeable LiPo batteries** and supplied the seller listing. Status is Planned, not Ordered or Delivered; two cells are required. Plug variant remains undecided. Documented the original PCB's lack of a battery connector footprint and the controller B+/B− pigtail approach; actual clone pads, charging current, battery protection and seller connector photos remain unverified. |
 | 2026-10-26 | User confirmed labelled **B+/B− pads at the USB-C end** of the received controllers. Clarified that a battery with factory-attached wires can be soldered directly through a power switch; connectors are optional for serviceability. Connection method remains undecided; no new purchases or deliveries assumed. |
 | 2026-10-27 | User reported new orders: **#1 four 3.7 V / 110 mAh / 301230 LiPo batteries (one four-piece lot); #2 M2 nylon hex standoffs, 10 mm height, quantity unreported; #3 thirty 2.54 mm 1×4 female sockets; #4 one 3.5 mm curved-to-curved audio cable; #5 one hundred adhesive bumper pads; #6 five pairs under the same bumper description; #7 two SSD1306 0.91-inch 128×32 I²C OLED modules; #8 ten pieces under the same OLED description**. Items #6/#8 retained separately pending description confirmation; no duplicate quantities discarded or silently combined. All are Ordered, with delivery unreported. Cable wiring and physical compatibility remain unverified. |
+| 2026-11-15 | Found that on the number and home rows the diode pads sit beside the Choc socket pads. Most near-contacts are the same net and harmless; the outer-column keys on one half can short across their diode. User reported both at-risk pairs soldered on one half, with heavy rosin residue. Multimeter check pending. Added [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md) and [TESTING.md](TESTING.md). |
 
 ## Assembly references
 
 - [Original English build guide](../../Pro/Doc/buildguide_en.md): component placement and left/right assembly pictures. Use the controller and wiring checks above for this wireless build.
 - [Main PCB](../../Pro/PCB/Lily58_Pro.kicad_pcb), [schematic](../../Pro/PCB/Lily58_Pro.sch) and [footprint library](../../Pro/PCB/Lily58_Pro-footprint.pretty/): electrical connections and dimensions. Embedded PCB footprints are authoritative if the library differs.
 - [Top plate](../../Pro/Case/Lily58_Pro_TOP.kicad_pcb) and [bottom plate](../../Pro/Case/Lily58_Pro_BOTTOM.kicad_pcb): original plate geometry.
+- [Choc socket/diode clearance](CHOC_DIODE_CLEARANCE.md): near-contacts on the number and home rows, and fixes.
+- [Testing procedure and results](TESTING.md): multimeter stages and per-key results.
 - [Order/export guide](ORDER_GUIDE.md) and [manufacturing review](prod_files/REVIEW.md): fabrication records and validation limits.
 
 Exact product compatibility, battery runtime and physical assembly fit remain unverified.
