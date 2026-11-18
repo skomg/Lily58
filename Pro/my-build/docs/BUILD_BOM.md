@@ -1,6 +1,6 @@
 # Lily58 Pro assembly BOM and status
 
-Updated: **2026-11-15**. This is the single record for parts, deliveries and assembly status.
+Updated: **2026-11-18**. This is the single record for parts, deliveries and assembly status.
 
 Quantities cover **one complete keyboard: two halves, 58 keys**, using the original Lily58 Pro PCBs, Choc v1 hot-swap switches and the delivered FR4 sandwich plates. The build includes **wireless operation, two OLED displays with protective covers, and fully wired backup with Bluetooth disabled**. The wired backup still needs a verified design.
 
@@ -35,7 +35,7 @@ All three batches were ordered in black with white silkscreen and LeadFree HASL.
 | Choc v1 hot-swap sockets | 58 | 110 | 110 | Delivered | Kailh listing: **CPG151101S11 For Outemu Cherry MX Switches**; user previously confirmed **Type B for low-profile chocolate (Choc)**. 52 spares. The generic listing title does not describe the selected variant; verify the actual footprint. Use the Choc pads at SW1–SW29 per half. |
 | Choc v1 keycaps | 58 usable caps | — | — | Needs selection | Choc v1 two-slot stems. All 1U is a supported option; verify legends, layout coverage and physical fit. Ordinary MX-stem caps do not fit. |
 | Switching diodes | 58 | 500 | 500 | Delivered | **1N4148W**; corrected quantity confirmed by the user. 442 spares. Verify **SOD-123** package: the earlier listing also called it 1206. Fit 29 per half at D1–D29, matching the cathode marking. |
-| Wireless controllers | 2 identical | 2 | 2 | Delivered | **nRF52840 nice!nano V2.0-compatible Pro Micro boards**, previously selected with **pins on three sides**. User confirms labelled **B+/B− pads**, first positions from the USB-C end. Verify the remaining pinout, charger and ZMK target; the listing does not certify original nice!nano specifications or fully wired backup support. |
+| Wireless controllers | 2 identical | 2 | 2 | Delivered | **nRF52840 nice!nano V2.0-compatible Pro Micro boards**, previously selected with **pins on three sides**. User confirms labelled **B+/B− pads**, first positions from the USB-C end. ZMK's `nice_nano_v2` target runs on controller 1, with USB, Bluetooth and battery operation confirmed off the PCB; see [TESTING.md](TESTING.md). Controller 2 is not yet flashed. Verify the remaining pinout and charger; the listing does not certify original nice!nano specifications or fully wired backup support. |
 | Removable controller socket/pin kits | 2 complete kits | — | — | Needs selection | Four 1×12 socket strips and 48 matching pins total, 2.54 mm pitch, for U1 on each half. Check supplied controller pins before buying extras. PCB drills are nominally **0.8128 mm**; pitch alone does not establish fit. Choose height with batteries, OLEDs and covers together. |
 | Reset buttons | 2 | 100 | 100 | Delivered | **Two-pin DIP tact switches, 3×6×5 mm**, white buttons. 98 spares. Verify normally open operation, TVBP06/RSW1 footprint with **6.5 mm pin-centre spacing**, 1.3 mm drills and cover clearance; body dimensions alone do not confirm fit. |
 
@@ -45,7 +45,7 @@ Controller installation rows differ between the left and right halves. Follow th
 
 | Part | Needed | Ordered | Delivered | Status | Specification / next check |
 | --- | --- | --- | --- | --- | --- |
-| Rechargeable batteries | 2 | 4 | 4 | Delivered | **4PCS/Lot 3.7V 110mAh 301230 Lithium Polymer Rechargeable Battery For Nice Nano' or Wireless Keyboard MP4 MP5 GPS PSP Bluetooth**, from [this listing](https://www.aliexpress.com/item/1005010032194346.html). One four-piece lot received; two needed, two spares after this build. Plug/wire-only variant remains unreported. Confirm protection circuit, maximum charging current against the actual controller, polarity and complete pack dimensions/clearance. Include OLED consumption in runtime estimates. Seller-specific specifications/photos could not be verified. |
+| Rechargeable batteries | 2 | 4 | 4 | Delivered | **4PCS/Lot 3.7V 110mAh 301230 Lithium Polymer Rechargeable Battery For Nice Nano' or Wireless Keyboard MP4 MP5 GPS PSP Bluetooth**, from [this listing](https://www.aliexpress.com/item/1005010032194346.html). One four-piece lot received; two needed, two spares after this build. Plug/wire-only variant remains unreported. Confirm protection circuit, maximum charging current against the actual controller, polarity and complete pack dimensions/clearance. Include OLED consumption in runtime estimates. Seller-specific specifications/photos could not be verified. One cell measured 3.9 V and powered controller 1 through B+/B−; see [TESTING.md](TESTING.md). |
 | Battery disconnect/power switches (optional) | 2 if physical battery disconnect is chosen | — | — | Needs selection | A physical switch is optional; direct battery wiring can use firmware low-power states, which do not disconnect the battery. Recommended switch candidate: **C&K JS102011CQN**, maintained SPDT slide switch, three through-hole terminals, **0.3 A at 6 V DC**; see [manufacturer datasheet](https://www.ckswitches.com/media/1422/js.pdf). User selection and mechanical mounting remain pending. Use common plus one switched terminal in the battery-positive lead to controller B+; leave the third terminal unconnected and insulated. One per half, mounted separately because the original PCB has no power-switch footprint. Verify the actual charger current is within the switch and battery ratings. |
 | Battery connector/pigtail pairs (optional) | 0 for direct wiring; 2 matched sets if removable | — | — | Needs design | A connector is **not electrically required**: battery factory-attached leads can be soldered through the power switch to controller B+/B−. A connector makes battery removal/replacement easier. If chosen, use matching **two-pin JST-PH, 2.0 mm pitch** parts; genuine **PHR-2-BK** is a black two-position PH housing. Seller variant equivalence remains unverified. Do not duplicate plugs supplied with the cells; verify measured polarity. |
 | Insulated hookup wire | About 1–2 m total | — | — | Planned | Flexible stranded electronics wire, approximately 28 AWG for short low-current leads. Final gauge and length follow the harness and controller charge current. |
@@ -112,7 +112,7 @@ Do not directly join independent battery or regulator outputs. For any approved 
 
 ## Assembly status
 
-No parts have been reported Tested. The user reported the two at-risk outer-column socket/diode pairs (number row and home row) soldered on one half; see [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md). Test procedure and per-key results: [TESTING.md](TESTING.md).
+No parts have been reported Tested. Controller 1 was bench-tested off the PCB over USB, Bluetooth and battery power; see [TESTING.md](TESTING.md). The user reported the two at-risk outer-column socket/diode pairs (number row and home row) soldered on one half; see [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md). Test procedure and per-key results: [TESTING.md](TESTING.md).
 
 - [ ] Confirm the received 10 mm spacer quantity and whether the OLED modules include male headers.
 - [ ] Select remaining keycaps, controller connections, power wiring and covers; verify the received batteries, OLEDs, sockets and cover spacers fit the full stack.
@@ -138,6 +138,7 @@ No parts have been reported Tested. The user reported the two at-risk outer-colu
 | 2026-10-27 | Additional component purchases recorded; see the component rows above for quantities and specifications. |
 | 2026-11-15 | Found that on the number and home rows the diode pads sit beside the Choc socket pads. Most near-contacts are the same net and harmless; the outer-column keys on one half can short across their diode. User reported both at-risk pairs soldered on one half, with heavy rosin residue. Multimeter check pending. Added [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md) and [TESTING.md](TESTING.md). |
 | 2026-11-15 | User confirmed receipt of all six orders reported on October 27. No recorded orders remain awaiting delivery. Cover-spacer quantity remains unreported; fitting and testing remain pending. |
+| 2026-11-18 | Controller 1 flashed with ZMK v0.3 `lily58_left` for `nice_nano_v2`, built from `zmk-config`. Off the PCB, shorting pins typed Esc and number keys over USB, and over Bluetooth on power-bank power after pairing with the Linux host. On a 3.9 V cell through B+/B−, it connected over Bluetooth and reported 66%. Typing on battery, charging and controller 2 remain untested. Added a battery stage to [TESTING.md](TESTING.md). |
 
 ## Assembly references
 

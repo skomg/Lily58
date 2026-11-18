@@ -1,6 +1,6 @@
 # Testing procedure and results
 
-Updated: **2026-11-15**. How each half is tested, and what has passed. Record a result only after measuring it. **— means not tested.**
+Updated: **2026-11-18**. How each half is tested, and what has passed. Record a result only after measuring it. **— means not tested.**
 
 ## Tools
 
@@ -43,11 +43,30 @@ The socket tab that beeps to the diode's unstriped end is the **diode-side tab**
 
 ### 4. Power short check, before fitting the controller and before any battery
 
-Continuity between the controller footprint's **GND** and **VCC** holes: **no beep.** In the KiCad footprint (U1), GND is pins 3, 4 and 23 and VCC is pin 21. The BOM covers battery polarity and charging checks.
+Continuity between the controller footprint's **GND** and **VCC** holes: **no beep.** In the KiCad footprint (U1), GND is pins 3, 4 and 23 and VCC is pin 21. Battery checks are stage 6.
 
 ### 5. Firmware key test
 
 Flash the half, insert the switches, then press every key in a key tester, for example `evtest` on Linux or any keyboard-tester web page. Wireless, OLED and wired-backup tests are tracked in [BUILD_BOM.md](BUILD_BOM.md).
+
+### 6. Battery, after stage 5 passes on USB alone
+
+Wire the cell's red (+) lead to the controller's **B+** pad and black (−) to **B−**. Never wire it to VCC (U1 pin 21), which is the controller's 3.3 V output to the OLED. RAW (U1 pin 24) is unconnected on this PCB. Solder with USB unplugged and any power switch off. The cell's leads are live: solder one at a time and keep the other insulated. **Never insert the TRRS cable while a battery is connected.**
+
+Before soldering:
+
+| Check | Mode | Expected |
+| --- | --- | --- |
+| Cell, red probe on red lead | DC volts | **3.0–4.2 V**. Negative means the lead colours are swapped. Below 3.0 V, do not use the cell. |
+| Controller B− ↔ a GND pin | Continuity | Beep |
+| Controller B+ ↔ B− | Continuity | No beep |
+
+After soldering, with USB unplugged:
+
+1. **B+ ↔ B−** on the controller reads the cell voltage. On these clones the red charge LED blinks twice as the cell is attached, then stays off without USB. That is normal and is not a running indicator.
+2. **On battery:** the left half pairs and types over Bluetooth, and the right half connects to the left.
+3. **Charging:** plug in USB. The charge LED lights (red on these clones, orange on a genuine nice!nano) and the cell voltage climbs toward 4.2 V. A genuine nice!nano charges at 100 mA, about 0.9C for a 110 mAh cell. The clone's current is unverified, so check the cell on its first charge: warm is fine, hot means unplug.
+4. **Level:** battery percentage appears in `upower -d`, in `bluetoothctl info <MAC>` and on the OLED. The right half's level also needs `CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING=y` and `CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY=y`. A level stuck at 0 or never changing means the clone senses the battery differently from the genuine board, which uses P0.04.
 
 ## Results
 
@@ -87,10 +106,27 @@ Each half's cell reads **diode / sockets / keypress**, for stages 2, 3 and 5. Us
 
 "Close, same net" applies only on the half whose sockets are on KiCad F.Cu, and "at risk" only on the half whose sockets are on B.Cu. See [CHOC_DIODE_CLEARANCE.md](CHOC_DIODE_CLEARANCE.md).
 
-| Half | Power short check (stage 4) |
-| --- | --- |
-| Left | — |
-| Right | — |
+The battery cell reads **cell / on battery / charging / level**: the pre-solder checks, then steps 2, 3 and 4 of stage 6.
+
+| Half | Power short check (stage 4) | Battery (stage 6) |
+| --- | --- | --- |
+| Left | — | — / — / — / — |
+| Right | — | — / — / — / — |
+
+### Controller bench tests, off the PCB
+
+Each controller is tested before fitting by shorting a row pin to a column pin with a wire instead of pressing a switch, watching `evtest`. These results do not replace stages 5 and 6 on the assembled halves. Controller 1 runs the left firmware; mark it L.
+
+| Controller | Firmware | Keys over USB | Keys over Bluetooth | On battery | Charging |
+| --- | --- | --- | --- | --- | --- |
+| 1 | ZMK v0.3 `lily58_left`, `nice_nano_v2` target | ✓ | ✓ on power-bank USB power | Runs; typing untested | — |
+| 2 | Not flashed | — | — | — | — |
+
+Controller 1, 2026-11-18:
+
+- **Keys:** shorting P0.24 (row 0) to the column pins typed Esc and number keys.
+- **Bluetooth:** paired, bonded and trusted with the Linux host. Powered from a 5 V power bank with no USB data, it reconnected and typed.
+- **Battery:** a 3.7 V 110 mAh cell was wired temporarily through a breadboard to B+/B−, and measured 3.9 V at the controller. With USB unplugged it connected over Bluetooth and ZMK reported 66%, which matches 3.9 V, so the clone's battery sensing works.
 
 ## Issues log
 
